@@ -1,4 +1,5 @@
 import pygame as py
+import time
 py.init()
 running = True
 screen = py.display.set_mode((700, 700))
@@ -50,13 +51,126 @@ dragging_foil = False
 dragging_bottle = False
 dragging_newspaper = False 
 dragging_paper_bag = False
-dragging_bottle= False
 
+score = 0 
+
+font = py.font.Font(None, 36)
+winner_text = ""
+winner_text = font.render("" , True , "green")
+    
 while running:
     for event in py.event.get():
         if event.type == py.QUIT:
             running = False
+        if event.type == py.MOUSEBUTTONDOWN:
+            if banana_sprite.collidepoint(event.pos):
+                dragging_banana = True
+            if battery_sprite.collidepoint(event.pos):
+                dragging_battery = True
+            if foil_sprite.collidepoint(event.pos):
+                dragging_foil = True
+            if bottle_sprite.collidepoint(event.pos):
+                dragging_bottle = True
+            if newspaper_sprite.collidepoint(event.pos):
+                dragging_newspaper = True
+            if paper_bag_sprite.collidepoint(event.pos):
+                dragging_paper_bag = True
+            
+        if event.type == py.MOUSEMOTION:
+            if dragging_banana == True:
+                banana_sprite.center = event.pos
+            if dragging_battery == True:
+                battery_sprite.center = event.pos 
+            if dragging_foil == True:
+                foil_sprite.center = event.pos
+            if dragging_bottle == True:
+                bottle_sprite.center =event.pos
+            if dragging_paper_bag == True:
+                paper_bag_sprite.center = event.pos
+            if dragging_newspaper == True:
+                newspaper_sprite.center = event.pos 
+        
+
+        if event.type == py.MOUSEBUTTONUP:
+            dragging_banana = False 
+            dragging_battery = False
+            dragging_foil = False
+            dragging_bottle = False
+            dragging_paper_bag = False 
+            dragging_newspaper = False
+            
+            
+    if green_bin_sprite.colliderect(paper_bag_sprite):
+        paper_bag_sprite.center = (2000, 2000)  
+        dragging_paper_bag = False
+        time.sleep(1)    
+        score = score +1
+    if green_bin_sprite.colliderect(bottle_sprite):
+        bottle_sprite.center = (2000,2000)
+        dragging_bottle = False
+        time.sleep(1)
+        score = score +1
+    if green_bin_sprite.colliderect(newspaper_sprite):
+        newspaper_sprite.center = (2000,2000)
+        dragging_newspaper = False
+        time.sleep(1)
+        score = score +1 
+    if green_bin_sprite.colliderect(foil_sprite):
+        foil_sprite.center = (2000,2000)
+        dragging_foil = False
+        time.sleep(1)
+        score = score -1
+    if green_bin_sprite.colliderect(banana_sprite):
+            banana_sprite.center = (2000,2000)
+            dragging_banana = False
+            time.sleep(1)
+            score = score -1 
+    if green_bin_sprite.colliderect(battery_sprite):
+            battery_sprite.center = (2000,2000)
+            dragging_battery = False
+            time.sleep(1)
+            score = score -1 
+
+
+    if red_bin_sprite.colliderect(paper_bag_sprite):
+            paper_bag_sprite.center = (2000, 2000) 
+            dragging_paper_bag = False
+            time.sleep(1)    
+            score = score -1
+    if red_bin_sprite.colliderect(bottle_sprite):
+            bottle_sprite.center = (2000,2000)
+            dragging_bottle = False
+            time.sleep(1)
+            score = score -1
+    if red_bin_sprite.colliderect(newspaper_sprite):
+            newspaper_sprite.center = (2000,2000)
+            dragging_newspaper = False
+            time.sleep(1)
+            score = score -1 
+    if red_bin_sprite.colliderect(foil_sprite):
+            foil_sprite.center = (2000,2000)
+            dragging_foil = False 
+            time.sleep(1)
+            score = score +1
+    if red_bin_sprite.colliderect(banana_sprite):
+                banana_sprite.center = (2000,2000)
+                dragging_banana = False
+                time.sleep(1)
+                score = score +1 
+    if red_bin_sprite.colliderect(battery_sprite):
+                battery_sprite.center = (2000,2000)
+                dragging_battery = False
+                time.sleep(1)
+                score = score +1 
+
+    if score == 6:
+        winner_text = font.render("well done, all correct" , True , "green")
+    
+            
     screen.fill("black")
+    score_text = font.render("score = " + str(score) , True, "green")
+    instructions = font.render("drag the items to the correct bin" , True, "green")
+    
    
 
     screen.blit(green_bin, green_bin_sprite)
@@ -67,5 +181,8 @@ while running:
     screen.blit(foil, foil_sprite)
     screen.blit(battery, battery_sprite)
     screen.blit(banana, banana_sprite)
+    screen.blit(score_text, (300, 650))
+    screen.blit(instructions, (35, 30))
+    screen.blit(winner_text, (300,350))
     py.display.update()
 py.quit()
