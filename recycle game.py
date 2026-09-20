@@ -5,6 +5,7 @@ running = True
 screen = py.display.set_mode((700, 700))
 py.display.set_caption("recycle game")
 running = True
+py.mixer.init()
 
 green_bin = py.image.load("greenbin.png")
 red_bin = py.image.load("red bin.png")
@@ -53,10 +54,13 @@ dragging_newspaper = False
 dragging_paper_bag = False
 
 score = 0 
+count = 0
 
 font = py.font.Font(None, 36)
 winner_text = ""
 winner_text = font.render("" , True , "green")
+incorrect_text = ""
+incorrect_text = font.render("" , True , "red")
     
 while running:
     for event in py.event.get():
@@ -101,73 +105,115 @@ while running:
             
             
     if green_bin_sprite.colliderect(paper_bag_sprite):
+        count = count + 1
         paper_bag_sprite.center = (2000, 2000)  
         dragging_paper_bag = False
+        correct = py.mixer.music.load("dragon-studio-correct-472358.mp3")
+        py.mixer.music.play(0)
         time.sleep(1)    
         score = score +1
     if green_bin_sprite.colliderect(bottle_sprite):
+        count = count + 1
         bottle_sprite.center = (2000,2000)
         dragging_bottle = False
+        correct = py.mixer.music.load("dragon-studio-correct-472358.mp3")
+        py.mixer.music.play(0)
         time.sleep(1)
+
         score = score +1
     if green_bin_sprite.colliderect(newspaper_sprite):
+        count = count + 1
         newspaper_sprite.center = (2000,2000)
         dragging_newspaper = False
+        correct = py.mixer.music.load("dragon-studio-correct-472358.mp3")
+        py.mixer.music.play(0)
         time.sleep(1)
         score = score +1 
+
     if green_bin_sprite.colliderect(foil_sprite):
+        count = count + 1
         foil_sprite.center = (2000,2000)
         dragging_foil = False
+        correct = py.mixer.music.load("logicallism-incorrect-buzzer-374194.mp3")
+        py.mixer.music.play(0)
         time.sleep(1)
         score = score -1
+
     if green_bin_sprite.colliderect(banana_sprite):
+            count = count + 1
             banana_sprite.center = (2000,2000)
             dragging_banana = False
+            correct = py.mixer.music.load("logicallism-incorrect-buzzer-374194.mp3")
+            py.mixer.music.play(0)
             time.sleep(1)
             score = score -1 
+
     if green_bin_sprite.colliderect(battery_sprite):
+            count = count + 1
             battery_sprite.center = (2000,2000)
             dragging_battery = False
+            correct = py.mixer.music.load("logicallism-incorrect-buzzer-374194.mp3")
+            py.mixer.music.play(0)
             time.sleep(1)
             score = score -1 
 
 
     if red_bin_sprite.colliderect(paper_bag_sprite):
+            count = count + 1
             paper_bag_sprite.center = (2000, 2000) 
             dragging_paper_bag = False
+            correct = py.mixer.music.load("logicallism-incorrect-buzzer-374194.mp3")
+            py.mixer.music.play(0)
             time.sleep(1)    
             score = score -1
     if red_bin_sprite.colliderect(bottle_sprite):
+            count = count + 1
             bottle_sprite.center = (2000,2000)
             dragging_bottle = False
+            correct = py.mixer.music.load("logicallism-incorrect-buzzer-374194.mp3")
+            py.mixer.music.play(0)
             time.sleep(1)
             score = score -1
     if red_bin_sprite.colliderect(newspaper_sprite):
+            count = count + 1
             newspaper_sprite.center = (2000,2000)
             dragging_newspaper = False
+            correct = py.mixer.music.load("logicallism-incorrect-buzzer-374194.mp3")
+            py.mixer.music.play(0)
             time.sleep(1)
             score = score -1 
     if red_bin_sprite.colliderect(foil_sprite):
+            count = count + 1
             foil_sprite.center = (2000,2000)
             dragging_foil = False 
+            correct = py.mixer.music.load("dragon-studio-correct-472358.mp3")
+            py.mixer.music.play(0)
             time.sleep(1)
             score = score +1
     if red_bin_sprite.colliderect(banana_sprite):
+                count = count + 1
                 banana_sprite.center = (2000,2000)
                 dragging_banana = False
+                correct = py.mixer.music.load("dragon-studio-correct-472358.mp3")
+                py.mixer.music.play(0)
                 time.sleep(1)
                 score = score +1 
     if red_bin_sprite.colliderect(battery_sprite):
+                count = count + 1
                 battery_sprite.center = (2000,2000)
                 dragging_battery = False
+                correct = py.mixer.music.load("dragon-studio-correct-472358.mp3")
+                py.mixer.music.play(0)
                 time.sleep(1)
                 score = score +1 
-
-    if score == 6:
-        winner_text = font.render("well done, all correct" , True , "green")
-    
-            
     screen.fill("black")
+    if count == 6:
+        if score == 6:
+            winner_text = font.render("well done, all correct" , True , "green")
+            screen.blit(winner_text, (300,350))
+        if score <6:
+            incorrect_text = font.render("placed incorrectly" , True , "red")
+            screen.blit(incorrect_text, (450, 500))
     score_text = font.render("score = " + str(score) , True, "green")
     instructions = font.render("drag the items to the correct bin" , True, "green")
     
@@ -183,6 +229,5 @@ while running:
     screen.blit(banana, banana_sprite)
     screen.blit(score_text, (300, 650))
     screen.blit(instructions, (35, 30))
-    screen.blit(winner_text, (300,350))
     py.display.update()
 py.quit()
